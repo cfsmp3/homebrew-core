@@ -4,8 +4,8 @@ class HaskellStack < Formula
   license "BSD-3-Clause"
 
   stable do
-    url "https://github.com/commercialhaskell/stack/archive/refs/tags/v3.7.1.tar.gz"
-    sha256 "e2ce0d053566634a426ba1916592dfcefe48bdebbfe6a0da07e23a79c0ed7759"
+    url "https://github.com/commercialhaskell/stack/archive/refs/tags/v3.9.1.tar.gz"
+    sha256 "9e3a40df6bcf3ca012d5b924eaf3b5b24563bfe07a6b4ed20098b73b15870c54"
 
     depends_on "ghc@9.8" => :build
   end
