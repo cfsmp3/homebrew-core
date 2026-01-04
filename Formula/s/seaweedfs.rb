@@ -50,15 +50,13 @@ class Seaweedfs < Formula
     master_grpc_port = free_port
     volume_grpc_port = free_port
 
-    fork do
-      exec bin/"weed", "server", "-dir=#{testpath}", "-ip.bind=0.0.0.0",
-           "-master.port=#{master_port}", "-volume.port=#{volume_port}",
-           "-master.port.grpc=#{master_grpc_port}", "-volume.port.grpc=#{volume_grpc_port}"
-    end
-    sleep 30
+    spawn bin/"weed", "server", "-dir=#{testpath}", "-ip.bind=0.0.0.0",
+          "-master.port=#{master_port}", "-volume.port=#{volume_port}",
+          "-master.port.grpc=#{master_grpc_port}", "-volume.port.grpc=#{volume_grpc_port}"
 
     # Upload a test file
-    fid = JSON.parse(shell_output("curl http://localhost:#{master_port}/dir/assign"))["fid"]
+    output = shell_output("curl --silent --retry 5 --retry-connrefused http://localhost:#{master_port}/dir/assign")
+    fid = JSON.parse(output)["fid"]
     system "curl", "-F", "file=@#{test_fixtures("test.png")}", "http://localhost:#{volume_port}/#{fid}"
 
     # Download and validate uploaded test file against the original
